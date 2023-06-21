@@ -1,0 +1,10 @@
+{
+"python.linting.pylintArgs": [
+    "--load-plugins",
+    "pylint_django",
+    "--errors-only",
+    "--load-plugins pylint_django"
+],
+"python.linting.flake8Enabled": true,
+"python.linting.enabled": true
+}
