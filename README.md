@@ -1,1 +1,1 @@
-![<-yamdb workflow](https://github.com/iffilippov/foodgram-project-react/actions/workflows/yamdb_workflow.yml/badge.svg)
+![<-foodgram workflow](https://github.com/iffilippov/foodgram-project-react/actions/workflows/foodgram-workflow.yml/badge.svg)
