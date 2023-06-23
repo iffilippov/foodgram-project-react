@@ -30,6 +30,6 @@ class FavouriteAdmin(admin.ModelAdmin):
     list_display = ('user', 'recipe',)
 
 
-@admin.register(models.IngredientRecipe)
-class IngredientRecipeAdmin(admin.ModelAdmin):
+@admin.register(models.IngredientAmountInRecipe)
+class IngredientAmountInRecipeAdmin(admin.ModelAdmin):
     list_display = ('recipe', 'ingredient', 'amount',)
