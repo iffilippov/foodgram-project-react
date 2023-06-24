@@ -9,7 +9,7 @@ from recipes.models import Ingredient
 class Command(BaseCommand):
     """
     Скрипт импорта мок-данных из файла .csv в БД.
-    Запуск производится командой python manage.py csv_import
+    Запуск производится командой python manage.py import_csv
     Заполнить базу можно только один раз.
     Для повторного запуска необходимо удалить файлы БД.
     """

@@ -2,12 +2,13 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 
-
-class User(AbstractUser):
-    ROLE = (
+ROLE = (
         ('user', 'Пользователь'),
         ('admin', 'Администратор'),
     )
+
+
+class User(AbstractUser):
     username = models.CharField(
         'Имя пользователя',
         max_length=150,
@@ -32,9 +33,10 @@ class User(AbstractUser):
         max_length=150,
         blank=True,
     )
-    role = models.TextField(
+    role = models.CharField(
         'Роль',
         choices=ROLE,
+        max_length=10,
         default='user',
     )
     password = models.CharField(
