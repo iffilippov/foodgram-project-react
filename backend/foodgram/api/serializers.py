@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.db.models import F
 from django.db.transaction import atomic
 from django.shortcuts import get_object_or_404
@@ -13,11 +12,8 @@ from rest_framework.serializers import (
 )
 
 from recipes import models
-from users.models import Subscribe
+from users.models import Subscribe, User
 from .fields import Base64ImageField
-
-
-User = get_user_model()
 
 
 class CustomUserSerializer(UserSerializer):
@@ -37,10 +33,10 @@ class CustomUserSerializer(UserSerializer):
 
     def get_is_subscribed(self, obj):
         request = self.context.get('request')
-        if not request or request.subscriber.is_anonymous:
+        if not request or request.user.is_anonymous:
             return False
         return Subscribe.objects.filter(
-            user=request.subscriber, author=obj).exists()
+            subscriber=request.user, author=obj).exists()
 
 
 class RecipeShortSerializer(ModelSerializer):
@@ -280,7 +276,7 @@ class UserCreateSerializer(UserCreateSerializer):
         return value
 
 
-class FollowShowSerializer(ModelSerializer):
+class SubscriptionShowSerializer(ModelSerializer):
 
     recipes_count = SerializerMethodField()
     recipes = SerializerMethodField()
@@ -317,13 +313,12 @@ class FollowShowSerializer(ModelSerializer):
 
     def get_is_subscribed(self, author):
         return Subscribe.objects.filter(
-            user=self.context.get('request').user,
+            subscriber=self.context.get('request').user,
             author=author
         ).exists()
 
 
-class FollowSerializer(ModelSerializer):
-    """Сериализатор Подписки."""
+class SubscriptionSerializer(ModelSerializer):
 
     class Meta:
         model = Subscribe
@@ -336,7 +331,7 @@ class FollowSerializer(ModelSerializer):
                 'errors': 'Подписка на себя запрещена.',
             })
         if Subscribe.objects.filter(
-                user=self.context['request'].user,
+                subscriber=self.context['request'].user,
                 author=data['author']
         ).exists():
             raise ValidationError({
@@ -345,7 +340,7 @@ class FollowSerializer(ModelSerializer):
         return data
 
     def to_representation(self, instance):
-        return FollowShowSerializer(
+        return SubscriptionShowSerializer(
             instance['author'],
             context={'request': self.context.get('request')}
         ).data
