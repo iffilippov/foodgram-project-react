@@ -132,4 +132,4 @@ dmypy.json
 .idea
 
 # frontend
-# frontend/
+frontend/node_modules
