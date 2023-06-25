@@ -5,6 +5,9 @@ from users.models import User
 
 
 class Tag(models.Model):
+    '''
+    Реализация модели тегов для рецептов.
+    '''
     name = models.CharField(
         verbose_name='Имя тега',
         max_length=150,
@@ -40,6 +43,9 @@ class Tag(models.Model):
 
 
 class Ingredient(models.Model):
+    '''
+    Реализация модели ингредиента для рецептов.
+    '''
     name = models.CharField(
         verbose_name='Название ингредиента',
         max_length=150,
@@ -67,6 +73,9 @@ class Ingredient(models.Model):
 
 
 class Recipe(models.Model):
+    '''
+    Реализация модели рецепта.
+    '''
     author = models.ForeignKey(
         User,
         verbose_name='Автор рецепта',
@@ -121,6 +130,10 @@ class Recipe(models.Model):
 
 
 class IngredientAmountInRecipe(models.Model):
+    '''
+    Реализация вспомогательной модели, связывающей ингредиенты,
+    их количество и рецепт.
+    '''
     ingredient = models.ForeignKey(
         Ingredient,
         verbose_name='Ингредиент',
@@ -152,6 +165,9 @@ class IngredientAmountInRecipe(models.Model):
 
 
 class Favourite(models.Model):
+    '''
+    Реализация модели избранного.
+    '''
     user = models.ForeignKey(
         User,
         verbose_name='Пользователь',
@@ -180,6 +196,9 @@ class Favourite(models.Model):
 
 
 class ShoppingCart(models.Model):
+    '''
+    Реализация модели корзины покупок.
+    '''
     user = models.ForeignKey(
         User,
         verbose_name='Пользователь',

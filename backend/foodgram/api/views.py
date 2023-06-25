@@ -18,6 +18,9 @@ from . import serializers
 
 
 class CustomUserViewSet(UserViewSet):
+    '''
+    Вьюсет для создания модели кастомного пользователя.
+    '''
     queryset = User.objects.all()
     serializer_class = serializers.CustomUserSerializer
     pagination_class = CustomPagination
@@ -76,11 +79,17 @@ class CustomUserViewSet(UserViewSet):
 
 
 class TagViewSet(ModelViewSet):
+    '''
+    Вьюсет для создания тегов.
+    '''
     queryset = models.Tag.objects.all()
     serializer_class = serializers.TagSerializer
 
 
 class IngredientViewSet(ModelViewSet):
+    '''
+    Вьюсет для создания ингредиентов.
+    '''
     queryset = models.Ingredient.objects.all()
     serializer_class = serializers.IngredientSerializer
     permission_classes = (IsAuthorOrAdminOrReadOnly,)
@@ -89,6 +98,9 @@ class IngredientViewSet(ModelViewSet):
 
 
 class RecipeViewSet(ModelViewSet):
+    '''
+    Вьюсет для создания рецептов.
+    '''
     queryset = models.Recipe.objects.all()
     permission_classes = (
         IsAuthorOrAdminOrReadOnly,

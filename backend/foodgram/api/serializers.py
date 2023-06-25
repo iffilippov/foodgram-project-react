@@ -17,7 +17,9 @@ from .fields import Base64ImageField
 
 
 class CustomUserSerializer(UserSerializer):
-
+    '''
+    Сериализатор объектов типа кастомный пользователь.
+    '''
     is_subscribed = SerializerMethodField(read_only=True)
 
     class Meta:
@@ -39,8 +41,121 @@ class CustomUserSerializer(UserSerializer):
             subscriber=request.user, author=obj).exists()
 
 
-class RecipeShortSerializer(ModelSerializer):
+class UserCreateSerializer(UserCreateSerializer):
+    '''
+    Сериализатор для создания объектов типа кастомный пользователь.
+    '''
+    class Meta:
+        model = User
+        fields = (
+            'id',
+            'username',
+            'email',
+            'password',
+            'first_name',
+            'last_name',
+        )
 
+    def validate_username(self, value):
+        if value.lower() == 'me':
+            raise ValidationError({
+                'errors': f'Имя пользователя {value} недопустимо',
+            })
+        return value
+
+
+class SubscriptionSerializer(ModelSerializer):
+    '''
+    Сериализатор объектов модели подписок.
+    '''
+    class Meta:
+        model = Subscribe
+        fields = ('subscriber', 'author')
+
+    def validate(self, data):
+        get_object_or_404(User, username=data['author'])
+        if self.context['request'].user == data['author']:
+            raise ValidationError({
+                'errors': 'Подписка на себя запрещена.',
+            })
+        return data
+
+
+class SubscriptionShowSerializer(ModelSerializer):
+    '''
+    Сериализатор отображения подписок.
+    '''
+    recipes_count = SerializerMethodField()
+    recipes = SerializerMethodField()
+    is_subscribed = SerializerMethodField(read_only=True)
+
+    class Meta(CustomUserSerializer.Meta):
+        model = User
+        fields = (
+            'email',
+            'id',
+            'username',
+            'first_name',
+            'last_name',
+            'is_subscribed',
+            'recipes',
+            'recipes_count',
+        )
+
+    def get_recipes_count(self, author):
+        return models.Recipe.objects.filter(author=author).count()
+
+    def get_recipes(self, author):
+        queryset = self.context.get('request')
+        recipes_limit = queryset.query_params.get('recipes_limit')
+        recipes = models.Recipe.objects.filter(author=author)
+        if recipes_limit:
+            recipes = recipes[:int(recipes_limit)]
+        serialiser = RecipeShortSerializer(
+            recipes,
+            many=True,
+            context={'request': queryset}
+        )
+        return serialiser.data
+
+    def get_is_subscribed(self, author):
+        return Subscribe.objects.filter(
+            subscriber=self.context.get('request').user,
+            author=author
+        ).exists()
+
+
+class TagSerializer(ModelSerializer):
+    '''
+    Сериализатор объектов типа Тег.
+    '''
+    class Meta:
+        model = models.Tag
+        fields = (
+            'id',
+            'name',
+            'color',
+            'slug'
+        )
+
+
+class IngredientSerializer(ModelSerializer):
+    '''
+    Сериализатор объектов типа Ингредиент.
+    '''
+    class Meta:
+        model = models.Ingredient
+        fields = (
+            'id',
+            'name',
+            'measurement_unit'
+        )
+
+
+class RecipeShortSerializer(ModelSerializer):
+    '''
+    Сериализатор для получения информации о рецепте.
+    '''
     image = Base64ImageField()
 
     class Meta:
@@ -53,30 +168,10 @@ class RecipeShortSerializer(ModelSerializer):
         )
 
 
-class TagSerializer(ModelSerializer):
-
-    class Meta:
-        model = models.Tag
-        fields = (
-            'id',
-            'name',
-            'color',
-            'slug'
-        )
-
-
-class IngredientSerializer(ModelSerializer):
-    class Meta:
-        model = models.Ingredient
-        fields = (
-            'id',
-            'name',
-            'measurement_unit'
-        )
-
-
 class RecipeIngredientsSerializer(ModelSerializer):
-
+    '''
+    Сериализатор для получение информации об ингредиентах в рецепте.
+    '''
     id = PrimaryKeyRelatedField(
         source='ingredient',
         read_only=True
@@ -103,7 +198,9 @@ class RecipeIngredientsSerializer(ModelSerializer):
 
 
 class RecipeSerializer(ModelSerializer):
-
+    '''
+    Сериализатор объектов типа Рецепт.
+    '''
     tags = TagSerializer(many=True, read_only=True)
     author = CustomUserSerializer(read_only=True)
     ingredients = SerializerMethodField()
@@ -152,7 +249,9 @@ class RecipeSerializer(ModelSerializer):
 
 
 class CreateIngredientRecipeSerializer(ModelSerializer):
-
+    '''
+    Сериализатор для добавления ингредиента в рецепт.
+    '''
     id = PrimaryKeyRelatedField(
         source='ingredient',
         queryset=models.Ingredient.objects.all()
@@ -177,7 +276,9 @@ class CreateIngredientRecipeSerializer(ModelSerializer):
 
 
 class RecipeCreateSerializer(ModelSerializer):
-
+    '''
+    Сериализатор для создания или обновления рецепта.
+    '''
     image = Base64ImageField(use_url=True, max_length=None)
     author = CustomUserSerializer(read_only=True)
     ingredients = CreateIngredientRecipeSerializer(many=True)
@@ -253,80 +354,3 @@ class RecipeCreateSerializer(ModelSerializer):
                 'request': self.context.get('request'),
             }
         ).data
-
-
-class UserCreateSerializer(UserCreateSerializer):
-
-    class Meta:
-        model = User
-        fields = (
-            'id',
-            'username',
-            'email',
-            'password',
-            'first_name',
-            'last_name',
-        )
-
-    def validate_username(self, value):
-        if value.lower() == 'me':
-            raise ValidationError({
-                'errors': f'Имя пользователя {value} недопустимо',
-            })
-        return value
-
-
-class SubscriptionShowSerializer(ModelSerializer):
-    recipes_count = SerializerMethodField()
-    recipes = SerializerMethodField()
-    is_subscribed = SerializerMethodField(read_only=True)
-
-    class Meta(CustomUserSerializer.Meta):
-        model = User
-        fields = (
-            'email',
-            'id',
-            'username',
-            'first_name',
-            'last_name',
-            'is_subscribed',
-            'recipes',
-            'recipes_count',
-        )
-
-    def get_recipes_count(self, author):
-        return models.Recipe.objects.filter(author=author).count()
-
-    def get_recipes(self, author):
-        queryset = self.context.get('request')
-        recipes_limit = queryset.query_params.get('recipes_limit')
-        recipes = models.Recipe.objects.filter(author=author)
-        if recipes_limit:
-            recipes = recipes[:int(recipes_limit)]
-        serialiser = RecipeShortSerializer(
-            recipes,
-            many=True,
-            context={'request': queryset}
-        )
-        return serialiser.data
-
-    def get_is_subscribed(self, author):
-        return Subscribe.objects.filter(
-            subscriber=self.context.get('request').user,
-            author=author
-        ).exists()
-
-
-class SubscriptionSerializer(ModelSerializer):
-
-    class Meta:
-        model = Subscribe
-        fields = ('subscriber', 'author')
-
-    def validate(self, data):
-        get_object_or_404(User, username=data['author'])
-        if self.context['request'].user == data['author']:
-            raise ValidationError({
-                'errors': 'Подписка на себя запрещена.',
-            })
-        return data

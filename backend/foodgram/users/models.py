@@ -9,6 +9,9 @@ ROLE = (
 
 
 class User(AbstractUser):
+    '''
+    Кастомная модель пользователя.
+    '''
     username = models.CharField(
         'Имя пользователя',
         max_length=150,
@@ -60,6 +63,9 @@ class User(AbstractUser):
 
 
 class Subscribe(models.Model):
+    '''
+    Модель реализации подписки на авторов рецептов.
+    '''
     subscriber = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
