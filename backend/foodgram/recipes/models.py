@@ -9,10 +9,6 @@ class Tag(models.Model):
         verbose_name='Имя тега',
         max_length=150,
         unique=True,
-        validators=[
-            RegexValidator(regex=r'^[a-zA-Z]{1}[-a-zA-Z0-9_]+$',
-                           message='Тег должен состоять из букв и цифр')
-        ],
         blank=False,
     )
     color = models.CharField(
