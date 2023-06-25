@@ -3,9 +3,9 @@ from django.core.validators import RegexValidator
 from django.db import models
 
 ROLE = (
-        ('user', 'Пользователь'),
-        ('admin', 'Администратор'),
-    )
+    ('user', 'Пользователь'),
+    ('admin', 'Администратор'),
+)
 
 
 class User(AbstractUser):

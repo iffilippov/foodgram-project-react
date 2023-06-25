@@ -63,9 +63,8 @@ class Ingredient(models.Model):
         verbose_name_plural = 'Ингредиенты'
         ordering = ['name', 'measurement_unit']
         constraints = [models.UniqueConstraint(
-                fields=['name', 'measurement_unit'],
-                name='unique_ingredient'
-            )
+            fields=['name', 'measurement_unit'],
+            name='unique_ingredient')
         ]
 
     def __str__(self):
@@ -155,8 +154,7 @@ class IngredientAmountInRecipe(models.Model):
         verbose_name_plural = 'Количество ингредиентов в рецепте'
         constraints = [models.UniqueConstraint(
             fields=['ingredient', 'recipe'],
-            name='unique_IngredientAmountInRecipe'
-            )
+            name='unique_IngredientAmountInRecipe')
         ]
 
     def __str__(self):
