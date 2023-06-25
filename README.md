@@ -65,6 +65,7 @@ docker-compose up -d db
 
 из папки frontend выполняем
 ```
+npm i
 npm run start
 ```
 
