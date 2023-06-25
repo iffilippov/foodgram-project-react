@@ -115,7 +115,7 @@ class RecipeViewSet(ModelViewSet):
             return serializers.RecipeSerializer
         return serializers.RecipeCreateSerializer
 
-    def adding(self, model, user, pk):
+    def add_recipe(self, model, user, pk):
         if model.objects.filter(user=user, recipe__id=pk).exists():
             return Response({'errors': 'Такой рецепт уже существует'},
                             status=status.HTTP_400_BAD_REQUEST)
@@ -124,7 +124,7 @@ class RecipeViewSet(ModelViewSet):
         serializer = serializers.RecipeShortSerializer(recipe)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def deleting(self, model, user, pk):
+    def delete_recipe(self, model, user, pk):
         object = model.objects.filter(user=user, recipe__id=pk)
         if object.exists():
             object.delete()
@@ -139,8 +139,8 @@ class RecipeViewSet(ModelViewSet):
     )
     def favorite(self, request, pk):
         if request.method == 'POST':
-            return self.adding(models.Favourite, request.user, pk)
-        return self.deleting(models.Favourite, request.user, pk)
+            return self.add_recipe(models.Favourite, request.user, pk)
+        return self.delete_recipe(models.Favourite, request.user, pk)
 
     @action(
         detail=True,
@@ -149,8 +149,8 @@ class RecipeViewSet(ModelViewSet):
     )
     def shopping_cart(self, request, pk):
         if request.method == 'POST':
-            return self.adding(models.ShoppingCart, request.user, pk)
-        return self.deleting(models.ShoppingCart, request.user, pk)
+            return self.add_recipe(models.ShoppingCart, request.user, pk)
+        return self.delete_recipe(models.ShoppingCart, request.user, pk)
 
     @action(
         detail=False,

@@ -16,12 +16,13 @@
 `Логин: admin`
 `Пароль: admin`
 
-## Запуск проекта
+## Запуск проекта локально
 Клонируем проект
 ```
 git clone git@github.com:iffilippov/foodgram-project-react.git
 ```
-Добавляем файл infra/.env с настройками БД на сервер. Например:
+
+Добавляем файл infra/.env с настройками БД. Например:
 ```
 SECRET_KEY=Секретный_ключ
 DEBUG=True
@@ -32,6 +33,46 @@ POSTGRES_PASSWORD=postgres
 DB_HOST=db
 DB_PORT=5432
 ```
+
+Переходим в папку с бэкендом.
+Создаем и активируем виртуальное окружение
+```
+cd .../foodgram-project-react/backend
+python -m venv venv
+source venv/Scripts/activate
+```
+
+Устанавливаем зависимости из файла requirements.txt
+```
+pip install -r requirements.txt
+```
+
+При необходимости создаем и выполняем миграции, заполняем базу ингредиентов, создаем суперпользователя
+```
+cd foodgram/
+python manage.py makemigrations
+python manage.py migrate
+python manage.py import_csv
+python manage.py createsuperuser
+```
+
+Запускаем проект
+
+из папки infra выполняем
+```
+docker-compose up -d db
+```
+
+из папки frontend выполняем
+```
+npm run start
+```
+
+из папки foodgram выполняем
+```
+python manage.py runserver
+```
+
 Документация доступная по адресу:
 ```
 http://ххх.ххх.хх.хх/api/docs/redoc.html
