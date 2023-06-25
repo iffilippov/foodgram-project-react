@@ -271,13 +271,12 @@ class UserCreateSerializer(UserCreateSerializer):
     def validate_username(self, value):
         if value.lower() == 'me':
             raise ValidationError({
-                'errors': f"Имя '{value}' недопустимо",
+                'errors': f'Имя пользователя {value} недопустимо',
             })
         return value
 
 
 class SubscriptionShowSerializer(ModelSerializer):
-
     recipes_count = SerializerMethodField()
     recipes = SerializerMethodField()
     is_subscribed = SerializerMethodField(read_only=True)
@@ -322,7 +321,7 @@ class SubscriptionSerializer(ModelSerializer):
 
     class Meta:
         model = Subscribe
-        fields = ('user', 'author')
+        fields = ('subscriber', 'author')
 
     def validate(self, data):
         get_object_or_404(User, username=data['author'])
@@ -330,17 +329,4 @@ class SubscriptionSerializer(ModelSerializer):
             raise ValidationError({
                 'errors': 'Подписка на себя запрещена.',
             })
-        if Subscribe.objects.filter(
-                subscriber=self.context['request'].user,
-                author=data['author']
-        ).exists():
-            raise ValidationError({
-                'errors': 'Запрещено подписываться дважды.',
-            })
         return data
-
-    def to_representation(self, instance):
-        return SubscriptionShowSerializer(
-            instance['author'],
-            context={'request': self.context.get('request')}
-        ).data

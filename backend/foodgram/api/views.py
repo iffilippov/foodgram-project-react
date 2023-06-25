@@ -27,10 +27,11 @@ class CustomUserViewSet(UserViewSet):
         methods=['post', 'delete'],
         permission_classes=[permissions.IsAuthenticated]
     )
-    def subscribe(self, request):
+    def subscribe(self, request, **kwargs):
         subscriber = request.user
         author_id = self.kwargs.get('id')
         author = get_object_or_404(User, id=author_id)
+
         if request.method == 'POST':
             serializer = serializers.SubscriptionSerializer(
                 data={
@@ -39,7 +40,6 @@ class CustomUserViewSet(UserViewSet):
                 },
                 context={'request': request}
             )
-
             serializer.is_valid(raise_exception=True)
             serializer.save(
                 subscriber=subscriber,
@@ -55,6 +55,7 @@ class CustomUserViewSet(UserViewSet):
             subscriber=request.user,
             author=author
         )
+
         subscription.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
