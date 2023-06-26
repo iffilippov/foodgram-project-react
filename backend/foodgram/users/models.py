@@ -2,6 +2,15 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 
+from foodgram.global_constants import (
+    USERNAME_LENGTH,
+    EMAIL_LENGTH,
+    FIRST_NAME_LENGTH,
+    LAST_NAME_LENGTH,
+    ROLE_LENGTH,
+    PASSWORD_LENGTH,
+)
+
 ROLE = (
     ('user', 'Пользователь'),
     ('admin', 'Администратор'),
@@ -14,7 +23,7 @@ class User(AbstractUser):
     '''
     username = models.CharField(
         'Имя пользователя',
-        max_length=150,
+        max_length=USERNAME_LENGTH,
         unique=True,
         validators=[
             RegexValidator(regex=r'^[\w.@+-]',
@@ -23,28 +32,28 @@ class User(AbstractUser):
     )
     email = models.EmailField(
         'Электронная почта',
-        max_length=254,
+        max_length=EMAIL_LENGTH,
         unique=True,
     )
     first_name = models.CharField(
         'Имя',
-        max_length=150,
+        max_length=FIRST_NAME_LENGTH,
         blank=True,
     )
     last_name = models.CharField(
         'Фамилия',
-        max_length=150,
+        max_length=LAST_NAME_LENGTH,
         blank=True,
     )
     role = models.CharField(
         'Роль',
         choices=ROLE,
-        max_length=10,
+        max_length=ROLE_LENGTH,
         default='user',
     )
     password = models.CharField(
         'Пароль',
-        max_length=150,
+        max_length=PASSWORD_LENGTH,
         blank=True,
         null=True,
     )

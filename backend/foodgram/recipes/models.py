@@ -2,6 +2,14 @@ from django.core.validators import RegexValidator
 from django.db import models
 
 from users.models import User
+from foodgram.global_constants import (
+    TAG_NAME_LENGTH,
+    COLOR_NAME_LENGTH,
+    SLUG_LENGTH,
+    INGREDIENT_NAME_LENGTH,
+    MEASUREMENT_UNIT_LENGTH,
+    RECIPE_NAME_LENGTH,
+)
 
 
 class Tag(models.Model):
@@ -10,7 +18,7 @@ class Tag(models.Model):
     '''
     name = models.CharField(
         verbose_name='Имя тега',
-        max_length=150,
+        max_length=TAG_NAME_LENGTH,
         unique=True,
         blank=False,
     )
@@ -18,7 +26,7 @@ class Tag(models.Model):
         verbose_name='Цветовой HEX-код',
         default='#3caa3c',
         unique=True,
-        max_length=7,
+        max_length=COLOR_NAME_LENGTH,
         validators=[
             RegexValidator(regex=r'^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
                            message='Цвет должен быть в формате HEX')
@@ -28,7 +36,7 @@ class Tag(models.Model):
     slug = models.SlugField(
         verbose_name='Slug',
         unique=True,
-        max_length=150,
+        max_length=SLUG_LENGTH,
         blank=False,
     )
 
@@ -48,12 +56,12 @@ class Ingredient(models.Model):
     '''
     name = models.CharField(
         verbose_name='Название ингредиента',
-        max_length=150,
+        max_length=INGREDIENT_NAME_LENGTH,
         blank=False,
     )
     measurement_unit = models.CharField(
         verbose_name='Единицы измерения количества/объёма',
-        max_length=150,
+        max_length=MEASUREMENT_UNIT_LENGTH,
         blank=False,
         default=None,
     )
@@ -84,7 +92,7 @@ class Recipe(models.Model):
     )
     name = models.CharField(
         verbose_name='Название рецепта',
-        max_length=200,
+        max_length=RECIPE_NAME_LENGTH,
         blank=False,
     )
     image = models.ImageField(

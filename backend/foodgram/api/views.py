@@ -116,9 +116,6 @@ class RecipeViewSet(ModelViewSet):
         return serializers.RecipeCreateSerializer
 
     def add_recipe(self, model, user, pk):
-        if model.objects.filter(user=user, recipe__id=pk).exists():
-            return Response({'errors': 'Такой рецепт уже существует'},
-                            status=status.HTTP_400_BAD_REQUEST)
         recipe = get_object_or_404(models.Recipe, id=pk)
         model.objects.create(user=user, recipe=recipe)
         serializer = serializers.RecipeShortSerializer(recipe)
@@ -126,11 +123,8 @@ class RecipeViewSet(ModelViewSet):
 
     def delete_recipe(self, model, user, pk):
         object = model.objects.filter(user=user, recipe__id=pk)
-        if object.exists():
-            object.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response({'errors': 'Такого рецепта не существует'},
-                        status=status.HTTP_404_NOT_FOUND)
+        object.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(
         detail=True,

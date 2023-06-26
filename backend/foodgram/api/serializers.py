@@ -204,6 +204,7 @@ class RecipeSerializer(ModelSerializer):
     tags = TagSerializer(many=True, read_only=True)
     author = CustomUserSerializer(read_only=True)
     ingredients = SerializerMethodField()
+    # ingredients = RecipeIngredientsSerializer(many=True, read_only=True)
     is_favorited = SerializerMethodField(read_only=True)
     is_in_shopping_cart = SerializerMethodField(read_only=True)
 
@@ -246,6 +247,9 @@ class RecipeSerializer(ModelSerializer):
             'measurement_unit',
             amount=F('ingredientamountinrecipe__amount')
         )
+    #
+    #     queryset = recipe.ingredients.all()
+    #     return RecipeIngredientsSerializer(queryset, many=True).data
 
 
 class CreateIngredientRecipeSerializer(ModelSerializer):
