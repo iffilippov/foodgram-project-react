@@ -1,4 +1,3 @@
-from django.db.models import F
 from django.db.transaction import atomic
 from django.shortcuts import get_object_or_404
 from djoser.serializers import UserCreateSerializer, UserSerializer
@@ -203,8 +202,11 @@ class RecipeSerializer(ModelSerializer):
     '''
     tags = TagSerializer(many=True, read_only=True)
     author = CustomUserSerializer(read_only=True)
-    ingredients = SerializerMethodField()
-    # ingredients = RecipeIngredientsSerializer(many=True, read_only=True)
+    ingredients = RecipeIngredientsSerializer(
+        many=True,
+        read_only=True,
+        source='ingredient_list',
+    )
     is_favorited = SerializerMethodField(read_only=True)
     is_in_shopping_cart = SerializerMethodField(read_only=True)
 
@@ -238,18 +240,6 @@ class RecipeSerializer(ModelSerializer):
         return models.ShoppingCart.objects.filter(
             user=request.user, recipe__id=obj.id
         ).exists()
-
-    def get_ingredients(self, obj):
-        recipe = obj
-        return recipe.ingredients.values(
-            'id',
-            'name',
-            'measurement_unit',
-            amount=F('ingredientamountinrecipe__amount')
-        )
-    #
-    #     queryset = recipe.ingredients.all()
-    #     return RecipeIngredientsSerializer(queryset, many=True).data
 
 
 class CreateIngredientRecipeSerializer(ModelSerializer):
