@@ -1,15 +1,11 @@
 from django.core.validators import RegexValidator
 from django.db import models
-
+from foodgram.global_constants import (COLOR_NAME_LENGTH,
+                                       INGREDIENT_NAME_LENGTH,
+                                       MEASUREMENT_UNIT_LENGTH,
+                                       RECIPE_NAME_LENGTH, SLUG_LENGTH,
+                                       TAG_NAME_LENGTH)
 from users.models import User
-from foodgram.global_constants import (
-    TAG_NAME_LENGTH,
-    COLOR_NAME_LENGTH,
-    SLUG_LENGTH,
-    INGREDIENT_NAME_LENGTH,
-    MEASUREMENT_UNIT_LENGTH,
-    RECIPE_NAME_LENGTH,
-)
 
 
 class Tag(models.Model):
