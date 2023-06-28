@@ -11,10 +11,48 @@
 [![Postgres](https://img.shields.io/badge/Postgres-464646?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Docker](https://img.shields.io/badge/Docker-464646?style=flat-square&logo=docker)](https://www.docker.com/)
 
-## Проект пока доступен по ссылке: http://158.160.4.220/
+## Проект доступен по ссылке: http://158.160.4.220/
 Данные суперпользователя для ревью:
 `Логин: admin`
 `Пароль: admin`
+
+##  Запуск проекта в Docker
+Клонировать репозиторий:
+
+```
+git clone git@github.com:iffilippov/foodgram-project-react.git
+```
+
+Создать infra/.env
+Пример заполнения infra/.env:
+
+```
+SECRET_KEY=Секретный_ключ
+DEBUG=True
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+DB_HOST=db
+DB_PORT=5432
+```
+
+Запустить docker-compose:
+
+```
+docker-compose up -d
+```
+
+Будут созданы и запущены в фоновом режиме необходимые для работы приложения
+контейнеры (foodgram-db, foodgram-backend, foodgram-frontend, foodgram-nginx).
+
+Внутри контейнера foodgram-backend выполнить миграции, создать суперпользователя и собрать статику:
+
+```
+docker-compose exec foodgram-backend python manage.py migrate
+docker-compose exec foodgram-backend python manage.py createsuperuser
+docker-compose exec foodgram-backend python manage.py collectstatic --no-input 
+```
 
 ## Запуск проекта локально
 Клонируем проект
