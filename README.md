@@ -11,7 +11,7 @@
 [![Postgres](https://img.shields.io/badge/Postgres-464646?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Docker](https://img.shields.io/badge/Docker-464646?style=flat-square&logo=docker)](https://www.docker.com/)
 
-## Проект пока НЕ доступен по ссылке: http://ххх.ххх.хх.хх/
+## Проект пока доступен по ссылке: http://158.160.4.220/
 Данные суперпользователя для ревью:
 `Логин: admin`
 `Пароль: admin`
@@ -76,7 +76,7 @@ python manage.py runserver
 
 Документация доступная по адресу:
 ```
-http://ххх.ххх.хх.хх/api/docs/redoc.html
+http://158.160.4.220/api/docs/redoc.html
 ```
 ### Автор проекта
 [Иван Филиппов](https://www.linkedin.com/in/iffilippov/)

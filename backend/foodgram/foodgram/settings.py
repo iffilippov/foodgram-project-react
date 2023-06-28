@@ -10,7 +10,7 @@ load_dotenv(os.path.join(BASE_DIR.parent.parent, 'infra/.env'), verbose=True)
 
 SECRET_KEY = os.getenv('SECRET_KEY', default='django-insecure-kaz5s*c_o#nu*q5x_$p+2soq2c@^*v++84wc&+_9z5$q&oz=pi')
 
-DEBUG = os.getenv('DEBUG', default=True)
+DEBUG = os.getenv('DEBUG', default=False)
 
 ALLOWED_HOSTS = ['*']
 
