@@ -13,11 +13,11 @@ class RecipeAdmin(admin.ModelAdmin):
         'get_tags',
         'count_favourites',
     )
-    search_fields = ('author', 'name', 'tags',)
+    search_fields = ('author__name', 'name', 'tags__name',)
     list_filter = ('author', 'name', 'tags',)
 
     def get_ingredients(self, object):
-        return '\n'.join(
+        return ',\n'.join(
             ingredient.name for ingredient in object.ingredients.all()
         )
 
