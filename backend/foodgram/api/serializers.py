@@ -30,10 +30,9 @@ class CustomUserSerializer(UserSerializer):
 
     def get_is_subscribed(self, obj):
         request = self.context.get('request')
-        if not request or request.user.is_anonymous:
-            return False
         return Subscribe.objects.filter(
-            subscriber=request.user, author=obj).exists()
+            subscriber=request.user, author=obj).exists() if (
+            request or request.user.is_anonymous) else False
 
 
 class UserCreateSerializer(UserCreateSerializer):
@@ -223,19 +222,15 @@ class RecipeSerializer(ModelSerializer):
 
     def get_is_favorited(self, obj):
         request = self.context.get('request')
-        if request.user.is_anonymous:
-            return False
         return models.Favourite.objects.filter(
-            user=request.user, recipe__id=obj.id
-        ).exists()
+            user=request.user, recipe__id=obj.id).exists() if (
+            not request.user.is_anonymous) else False
 
     def get_is_in_shopping_cart(self, obj):
         request = self.context.get('request')
-        if request.user.is_anonymous:
-            return False
         return models.ShoppingCart.objects.filter(
-            user=request.user, recipe__id=obj.id
-        ).exists()
+            user=request.user, recipe__id=obj.id).exists() if (
+            not request.user.is_anonymous) else False
 
 
 class CreateIngredientRecipeSerializer(ModelSerializer):
@@ -290,6 +285,7 @@ class RecipeCreateSerializer(ModelSerializer):
             'cooking_time'
         )
 
+    @staticmethod
     def create_ingredients(self, recipe, ingredients):
         models.IngredientAmountInRecipe.objects.bulk_create([
             models.IngredientAmountInRecipe(

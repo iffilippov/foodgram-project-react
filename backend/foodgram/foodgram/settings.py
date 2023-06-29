@@ -9,9 +9,9 @@ load_dotenv(os.path.join(BASE_DIR.parent.parent, 'infra/.env'), verbose=True)
 
 SECRET_KEY = os.getenv('SECRET_KEY', default='django-insecure-kaz5s*c_o#nu*q5x_$p+2soq2c@^*v++84wc&+_9z5$q&oz=pi')
 
-DEBUG = os.getenv('DEBUG', default=False)
+DEBUG = os.getenv('DEBUG', default='False')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', default='*')]
 
 
 INSTALLED_APPS = [
@@ -97,7 +97,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = os.getenv('USE_TZ', default=True)
+USE_TZ = os.getenv('USE_TZ', default='True')
 
 
 STATIC_URL = '/static/'

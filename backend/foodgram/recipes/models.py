@@ -1,10 +1,13 @@
 from django.core.validators import RegexValidator
 from django.db import models
-from foodgram.global_constants import (COLOR_NAME_LENGTH,
-                                       INGREDIENT_NAME_LENGTH,
-                                       MEASUREMENT_UNIT_LENGTH,
-                                       RECIPE_NAME_LENGTH, SLUG_LENGTH,
-                                       TAG_NAME_LENGTH)
+
+from foodgram.global_constants import (
+    COLOR_NAME_LENGTH,
+    INGREDIENT_NAME_LENGTH,
+    MEASUREMENT_UNIT_LENGTH,
+    RECIPE_NAME_LENGTH, SLUG_LENGTH,
+    TAG_NAME_LENGTH
+)
 from users.models import User
 
 
@@ -129,7 +132,7 @@ class Recipe(models.Model):
         ordering = ('-pub_date',)
 
     def __str__(self):
-        return f'Рецепт {self.name} от {self.author.get_username}'
+        return f'Рецепт {self.name}'
 
 
 class IngredientAmountInRecipe(models.Model):
