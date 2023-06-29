@@ -16,12 +16,12 @@ class RecipeAdmin(admin.ModelAdmin):
     search_fields = ('author', 'name', 'tags',)
     list_filter = ('author', 'name', 'tags',)
 
-    def get_ingredients(self, object):
-        return '\n'.join(
-            ingredient.name for ingredient in object.ingredients.all()
-        )
+    # def get_ingredients(self, object):
+    #     return '\n'.join(
+    #         ingredient.name for ingredient in object.ingredients.all()
+    #     )
 
-    get_ingredients.short_description = 'Ингредиенты'
+    # get_ingredients.short_description = 'Ингредиенты'
 
     def get_tags(self, object):
         return '\n'.join(tag.name for tag in object.tags.all())
@@ -52,7 +52,7 @@ class ShoppingCartAdmin(admin.ModelAdmin):
 
     def get_ingredients(self, object):
         return '\n'.join(
-            ingredient.name for ingredient in object.ingredients.all()
+            ingredient.name for ingredient in object.recipe.ingredients.all()
         )
 
     get_ingredients.short_description = 'Ингредиенты'
