@@ -1,13 +1,17 @@
 from django.db.transaction import atomic
 from django.shortcuts import get_object_or_404
 from djoser.serializers import UserCreateSerializer, UserSerializer
-from recipes import models
-from rest_framework.serializers import (IntegerField, ModelSerializer,
-                                        PrimaryKeyRelatedField,
-                                        SerializerMethodField,
-                                        SlugRelatedField, ValidationError)
-from users.models import Subscribe, User
+from rest_framework.serializers import (
+    IntegerField,
+    ModelSerializer,
+    PrimaryKeyRelatedField,
+    SerializerMethodField,
+    SlugRelatedField,
+    ValidationError
+)
 
+from recipes import models
+from users.models import Subscribe, User
 from .fields import Base64ImageField
 
 

@@ -4,13 +4,13 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
-from recipes import models
 from rest_framework import permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from users.models import Subscribe, User
 
+from recipes import models
+from users.models import Subscribe, User
 from . import serializers
 from .filters import IngredientSearchFilter, RecipeFilterSet
 from .pagination import CustomPagination
