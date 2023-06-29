@@ -9,7 +9,6 @@ class RecipeAdmin(admin.ModelAdmin):
         'id',
         'name',
         'author',
-        'get_ingredients',
         'get_tags',
         'count_favourites',
     )
@@ -51,7 +50,7 @@ class ShoppingCartAdmin(admin.ModelAdmin):
     list_display = ('user', 'recipe', 'get_ingredients',)
 
     def get_ingredients(self, object):
-        return '\n'.join(
+        return ',\n'.join(
             ingredient.name for ingredient in object.recipe.ingredients.all()
         )
 
