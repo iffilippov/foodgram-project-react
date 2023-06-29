@@ -13,7 +13,7 @@ class RecipeAdmin(admin.ModelAdmin):
         'get_tags',
         'count_favourites',
     )
-    search_fields = ('author__name', 'name', 'tags__name',)
+    search_fields = ('author__username', 'name', 'tags__name',)
     list_filter = ('author', 'name', 'tags',)
 
     def get_ingredients(self, object):
