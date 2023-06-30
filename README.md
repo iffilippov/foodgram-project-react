@@ -11,12 +11,6 @@
 [![Postgres](https://img.shields.io/badge/Postgres-464646?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Docker](https://img.shields.io/badge/Docker-464646?style=flat-square&logo=docker)](https://www.docker.com/)
 
-## Проект доступен по ссылке: http://158.160.4.220/
-Данные суперпользователя для ревью:
-`Электронная почта: admin@foodgram.ru`
-`Имя пользователя: admin`
-`Пароль: admin`
-
 ##  Запуск проекта в Docker
 Клонировать репозиторий:
 
