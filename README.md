@@ -107,9 +107,5 @@ npm run start
 python manage.py runserver
 ```
 
-Документация доступная по адресу:
-```
-http://158.160.4.220/api/docs/redoc.html
-```
 ### Автор проекта
 [Иван Филиппов](https://www.linkedin.com/in/iffilippov/)
